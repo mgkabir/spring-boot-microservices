@@ -20,7 +20,9 @@ public class LibraryResource {
     public Model getValue(@PathVariable("Id") String Id) {
 
         ResponseEntity<Model> entity = restTemplate.getForEntity("http://database-service/database/" + Id, Model.class);
-        return entity.getBody();
+        Model model = entity.getBody();
+        System.out.println("Response [ " + model.getId() + " : "+model.getName() +" ]");
+        return model;
 
     }
 

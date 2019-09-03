@@ -14,7 +14,7 @@ public class DatabaseResource {
 
     @GetMapping("/{Id}")
     public Model getValue(@PathVariable("Id") String Id) {
-        System.out.println("Database Server - Serving for : " + Id + " at " + Instant.now().toString());
-        return new Model(Id, "Database Object");
+        System.out.println("Database Server - Serving : " + Id + " at " + Instant.now().toString());
+        return new Model(Id, "Name from Database");
     }
 }

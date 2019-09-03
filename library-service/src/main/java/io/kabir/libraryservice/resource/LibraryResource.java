@@ -1,5 +1,6 @@
 package io.kabir.libraryservice.resource;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import io.kabir.libraryservice.model.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,8 @@ public class LibraryResource {
     private RestTemplate restTemplate;
 
     @GetMapping("/{Id}")
-    public Model getValue(@PathVariable("Id") String Id) {
+    @HystrixCommand(fallbackMethod = "getValueFromDatabaseFallback")
+    public Model getValueFromDatabase(@PathVariable("Id") String Id) {
 
         ResponseEntity<Model> entity = restTemplate.getForEntity("http://database-service/database/" + Id, Model.class);
         Model model = entity.getBody();
@@ -26,4 +28,8 @@ public class LibraryResource {
 
     }
 
+    public Model getValueFromDatabaseFallback(@PathVariable("Id") String Id) {
+        System.out.println("Response [ " + Id + " : Default Name ]");
+        return new Model(Id,"Default Name");
+    }
 }
